@@ -217,8 +217,8 @@ function updateUI() {
     elements.counter.textContent = gameState.count.toLocaleString();
     elements.streak.textContent = gameState.streak;
     elements.level.textContent = gameState.level;
-    elements.currentXP.textContent = gameState.xp;
-    elements.nextLevelXP.textContent = getNextLevelXP();
+    elements.currentXP.textContent = Math.floor(gameState.xp);
+    elements.nextLevelXP.textContent = Math.floor(getNextLevelXP());
 
     // Обновление прогресса XP
     const xpPercentage = (gameState.xp / getNextLevelXP()) * 100;
@@ -712,7 +712,11 @@ function shareToTelegram() {
     }
 
     try {
-        const message = `🎮 Я набрал ${gameState.count.toLocaleString()} очков в Telegram Clicker Pro v1.5.0!\n🔥 Мой уровень: ${gameState.level}, Макс. стрик: ${gameState.maxStreak}\n⏰ Время игры: ${Math.floor(gameState.timePlayed / 60)}:${(gameState.timePlayed % 60).toString().padStart(2, '0')}\n\nПопробуй побить мой рекорд!`;
+        const message = `🎮 Я набрал ${gameState.count.toLocaleString()} очков в Telegram Clicker Pro v1.5.0!
+🔥 Мой уровень: ${gameState.level}, Макс. стрик: ${gameState.maxStreak}
+⏰ Время игры: ${Math.floor(gameState.timePlayed / 60)}:${(gameState.timePlayed % 60).toString().padStart(2, '0')}
+
+Попробуй побить мой рекорд!`;
 
         Telegram.WebApp.sendData(JSON.stringify({
             type: 'share_result',

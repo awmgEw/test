@@ -734,14 +734,17 @@
       streak: 0,
       maxStreak: 0,
       lastClickTime: 0,
-      clickSpeed: 0
+      startTime: Date.now()
     };
     
     // Инициализация звука
     let audioContext;
     let clickSound;
+    let audioInitialized = false;
     
     function initAudio() {
+      if (audioInitialized) return;
+      
       try {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const gainNode = audioContext.createGain();
@@ -751,7 +754,12 @@
         // Создаем простой звук клика
         clickSound = {
           play: () => {
-            if (!settings.sound) return;
+            if (!settings.sound || !audioContext) return;
+            
+            // Возобновляем аудиоконтекст, если он приостановлен
+            if (audioContext.state === 'suspended') {
+              audioContext.resume();
+            }
             
             const oscillator = audioContext.createOscillator();
             const envelope = audioContext.createGain();
@@ -769,6 +777,8 @@
             oscillator.stop(audioContext.currentTime + 0.1);
           }
         };
+        
+        audioInitialized = true;
       } catch (e) {
         console.log('Web Audio API не поддерживается', e);
       }
@@ -862,7 +872,6 @@
           clickSound.play();
         } catch (e) {
           console.log('Ошибка воспроизведения звука', e);
-          initAudio();
         }
       }
     }
@@ -994,6 +1003,11 @@
     
     // Обработчик клика
     function handleClick() {
+      // Инициализируем аудио при первом клике
+      if (!audioInitialized) {
+        initAudio();
+      }
+      
       // Текущее время
       const now = Date.now();
       
@@ -1023,8 +1037,6 @@
       // Расчет скорости кликов
       if (gameState.totalClicks > 1) {
         const timeDiff = (now - gameState.startTime) / 1000;
-        gameState.clickSpeed = Math.round((gameState.totalClicks / timeDiff) * 10) / 10;
-        document.getElementById('clicks-per-second').textContent = gameState.clickSpeed;
       }
       
       // Обновление UI с анимацией
@@ -1076,7 +1088,6 @@
           streak: 0,
           maxStreak: 0,
           lastClickTime: 0,
-          clickSpeed: 0,
           startTime: Date.now()
         };
         
@@ -1105,9 +1116,6 @@
     
     // Инициализация приложения
     function init() {
-      // Инициализация звука
-      initAudio();
-      
       // Инициализация настроек
       initSettings();
       
@@ -1153,8 +1161,6 @@
         if (gameState.totalClicks > 0) {
           const now = Date.now();
           const timeDiff = (now - gameState.startTime) / 1000;
-          gameState.clickSpeed = Math.round((gameState.totalClicks / timeDiff) * 10) / 10;
-          document.getElementById('clicks-per-second').textContent = gameState.clickSpeed;
         }
       }, 1000);
       

@@ -62,6 +62,10 @@
     .header {
       margin-bottom: 25px;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .logo {
@@ -78,6 +82,9 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: pulse 2s infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     @keyframes pulse {
@@ -94,6 +101,9 @@
       -webkit-text-fill-color: transparent;
       margin-bottom: 5px;
       text-shadow: 0 2px 5px rgba(41, 98, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .version {
@@ -102,7 +112,9 @@
       color: var(--primary);
       padding: 2px 8px;
       border-radius: 12px;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       margin-top: -5px;
     }
 
@@ -110,6 +122,10 @@
       color: #888;
       font-size: 1.05rem;
       margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
 
     .stats-container {
@@ -128,6 +144,10 @@
       box-shadow: var(--shadow);
       transition: all 0.3s ease;
       border: 1px solid rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .stat-card:hover {
@@ -142,12 +162,18 @@
       background: linear-gradient(45deg, var(--primary), #651fff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .stat-label {
       font-size: 0.9rem;
       color: #999;
       font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .counter-display {
@@ -160,6 +186,9 @@
       text-shadow: 0 4px 15px rgba(41, 98, 255, 0.3);
       position: relative;
       animation: fadeIn 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     @keyframes fadeIn {
@@ -183,9 +212,11 @@
       overflow: hidden;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
       min-width: 280px;
       transform: scale(1);
+      text-align: center;
     }
 
     .click-btn:active {
@@ -232,11 +263,13 @@
       cursor: pointer;
       box-shadow: var(--shadow);
       transition: all 0.2s ease;
-      display: flex;
+      display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       min-width: 130px;
       border: 1px solid rgba(0, 0, 0, 0.05);
+      text-align: center;
     }
 
     .action-btn:hover {
@@ -334,6 +367,16 @@
       pointer-events: all;
     }
 
+    .modal-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: var(--primary);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .modal-content {
       background: var(--card-bg);
       border-radius: 20px;
@@ -343,31 +386,29 @@
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
       transform: scale(0.9);
       transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .settings-modal.show .modal-content {
       transform: scale(1);
     }
 
-    .modal-title {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      color: var(--primary);
-      text-align: center;
-    }
-
     .setting-option {
       margin: 15px 0;
-      text-align: left;
       padding: 12px 0;
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .setting-label {
       display: block;
-      margin-bottom: 8px;
       font-weight: 600;
       font-size: 1.05rem;
+      margin: 0;
     }
 
     .toggle {
@@ -375,6 +416,7 @@
       display: inline-block;
       width: 60px;
       height: 34px;
+      flex-shrink: 0;
     }
 
     .toggle input {
@@ -457,6 +499,9 @@
       transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       z-index: 900;
       box-shadow: 0 -5px 35px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .share-modal.show {
@@ -500,6 +545,10 @@
       border-radius: 12px;
       padding: 15px;
       font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
 
     .share-buttons {
@@ -514,10 +563,16 @@
       flex: 1;
       font-weight: 600;
       box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .achievement-icon {
       font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .pulse {
@@ -539,14 +594,18 @@
       color: var(--warning);
       font-weight: 600;
       min-height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .streak-bar {
       height: 6px;
       background: rgba(255, 171, 0, 0.2);
       border-radius: 3px;
-      margin-top: 8px;
+      margin: 8px auto;
       overflow: hidden;
+      max-width: 300px;
     }
 
     .streak-progress {
@@ -581,6 +640,86 @@
       width: 10px;
       height: 20px;
       opacity: 0;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: #888;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .close-modal:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--text);
+      transform: rotate(90deg);
+    }
+
+    .share-message {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      color: var(--text);
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 12px;
+      padding: 15px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .share-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .telegram-share {
+      background: linear-gradient(45deg, #0088cc, #00bfff);
+      color: white;
+      flex: 1;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .achievement-icon {
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pulse {
+      animation: pulse 1s infinite;
+    }
+
+    .counter-animation {
+      animation: jump 0.3s ease;
+    }
+
+    @keyframes jump {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
     }
   </style>
 </head>
@@ -887,9 +1026,6 @@
     function createParticles(x, y) {
       if (!settings.particles) return;
       
-      // Очищаем старые частицы
-      particlesContainer.innerHTML = '';
-      
       const colors = ['#2962ff', '#00c853', '#ffab00', '#ff5252', '#651fff'];
       const particleCount = 15;
       
@@ -904,27 +1040,30 @@
         const velocity = Math.random() * 3 + 1;
         const duration = Math.random() * 800 + 400;
         
-        // Позиция
-        const startX = x - 100;
-        const startY = y - 100;
+        // Позиция - используем точку клика как центр, а не фиксированное смещение
+        const offsetX = (Math.random() - 0.5) * 40;
+        const offsetY = (Math.random() - 0.5) * 40;
         
         // Стили частицы
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
         particle.style.backgroundColor = color;
-        particle.style.left = `${startX}px`;
-        particle.style.top = `${startY}px`;
+        particle.style.left = `${x + offsetX}px`;
+        particle.style.top = `${y + offsetY}px`;
         particle.style.boxShadow = `0 0 ${size}px ${color}`;
+        particle.style.position = 'absolute';
+        particle.style.borderRadius = '50%';
+        particle.style.pointerEvents = 'none';
         
         particlesContainer.appendChild(particle);
         
-        // Анимация
-        const moveX = Math.cos(angle) * velocity * 20;
-        const moveY = Math.sin(angle) * velocity * 20;
+        // Анимация - более разнообразное движение
+        const moveX = Math.cos(angle) * velocity * 30;
+        const moveY = Math.sin(angle) * velocity * 30;
         
         setTimeout(() => {
-          particle.style.transition = `all ${duration}ms cubic-bezier(0,0,0.2,1)`;
-          particle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+          particle.style.transition = `all ${duration}ms cubic-bezier(0.2, 0.8, 0.4, 1)`;
+          particle.style.transform = `translate(${moveX}px, ${moveY}px) scale(0)`;
           particle.style.opacity = '0';
           
           setTimeout(() => {

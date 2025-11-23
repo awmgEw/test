@@ -1,1321 +1,268 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#2962ff">
-  <title>🚀 Telegram Clicker Pro v1.0.0</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #2962ff;
-      --secondary: #00c853;
-      --background: #f5f7ff;
-      --card-bg: #ffffff;
-      --text: #1a1a1a;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      --particle: #2962ff;
-      --success: #00c853;
-      --warning: #ffab00;
-      --danger: #ff5252;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --background: #121212;
-        --card-bg: #1e1e1e;
-        --text: #ffffff;
-        --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        --particle: #4da6ff;
-      }
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: var(--background);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      overflow-x: hidden;
-      transition: background 0.3s ease;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 500px;
-      text-align: center;
-    }
-
-    .header {
-      margin-bottom: 25px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .logo-icon {
-      font-size: 2.2rem;
-      background: linear-gradient(45deg, var(--primary), #651fff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: pulse 2s infinite;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.7; }
-      100% { opacity: 1; }
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      background: linear-gradient(45deg, var(--primary), #651fff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 5px;
-      text-shadow: 0 2px 5px rgba(41, 98, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .version {
-      font-size: 0.85rem;
-      background: rgba(41, 98, 255, 0.15);
-      color: var(--primary);
-      padding: 2px 8px;
-      border-radius: 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: -5px;
-    }
-
-    .subtitle {
-      color: #888;
-      font-size: 1.05rem;
-      margin-top: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .stats-container {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
-
-    .stat-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 14px;
-      min-width: 110px;
-      box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-      border: 1px solid rgba(0, 0, 0, 0.03);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
-    }
-
-    .stat-value {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin: 5px 0;
-      background: linear-gradient(45deg, var(--primary), #651fff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .stat-label {
-      font-size: 0.9rem;
-      color: #999;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .counter-display {
-      font-size: 5rem;
-      font-weight: 800;
-      margin: 20px 0;
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 4px 15px rgba(41, 98, 255, 0.3);
-      position: relative;
-      animation: fadeIn 0.5s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .click-btn {
-      background: linear-gradient(45deg, var(--primary), #651fff);
-      color: white;
-      border: none;
-      border-radius: 24px;
-      padding: 18px 45px;
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin: 25px 0;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(41, 98, 255, 0.4);
-      transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-width: 280px;
-      transform: scale(1);
-      text-align: center;
-    }
-
-    .click-btn:active {
-      transform: scale(0.96);
-      box-shadow: 0 4px 15px rgba(41, 98, 255, 0.3);
-    }
-
-    .click-btn:hover {
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 8px 25px rgba(41, 98, 255, 0.5);
-    }
-
-    .click-btn::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -60%;
-      width: 20px;
-      height: 200%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: rotate(30deg);
-      transition: all 0.6s;
-    }
-
-    .click-btn:hover::after {
-      left: 120%;
-    }
-
-    .btn-container {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    .action-btn {
-      background: var(--card-bg);
-      border: none;
-      border-radius: 16px;
-      padding: 12px 18px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-width: 130px;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      text-align: center;
-    }
-
-    .action-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .reset-btn {
-      color: var(--danger);
-    }
-
-    .share-btn {
-      color: var(--primary);
-    }
-
-    .settings-btn {
-      color: #651fff;
-    }
-
-    .particles {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      background: var(--particle);
-      opacity: 0.8;
-      pointer-events: none;
-    }
-
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background: #ff0;
-      opacity: 0.8;
-    }
-
-    .achievement {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: linear-gradient(45deg, var(--primary), #651fff);
-      color: white;
-      padding: 12px 20px;
-      border-radius: 12px;
-      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
-      transform: translateX(200%);
-      transition: transform 0.3s ease-out;
-      z-index: 1000;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      max-width: 300px;
-    }
-
-    .achievement.show {
-      transform: translateX(0);
-    }
-
-    .achievement.success {
-      background: linear-gradient(45deg, var(--success), #00e676);
-    }
-
-    .achievement.warning {
-      background: linear-gradient(45deg, var(--warning), #ffd600);
-    }
-
-    .settings-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .settings-modal.show {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .modal-title {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      color: var(--primary);
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-content {
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 30px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-      transform: scale(0.9);
-      transition: transform 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .settings-modal.show .modal-content {
-      transform: scale(1);
-    }
-
-    .setting-option {
-      margin: 15px 0;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .setting-label {
-      display: block;
-      font-weight: 600;
-      font-size: 1.05rem;
-      margin: 0;
-    }
-
-    .toggle {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-      flex-shrink: 0;
-    }
-
-    .toggle input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 34px;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider {
-      background-color: var(--primary);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(26px);
-    }
-
-    @media (max-width: 480px) {
-      .counter-display {
-        font-size: 4rem;
-      }
-      
-      .click-btn {
-        padding: 15px 35px;
-        font-size: 1.5rem;
-        min-width: 240px;
-      }
-      
-      .stat-value {
-        font-size: 1.5rem;
-      }
-      
-      h1 {
-        font-size: 1.8rem;
-      }
-      
-      .btn-container {
-        gap: 8px;
-      }
-      
-      .action-btn {
-        min-width: 110px;
-        padding: 10px 12px;
-        font-size: 0.95rem;
-      }
-    }
-
-    .share-modal {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: var(--card-bg);
-      border-radius: 24px 24px 0 0;
-      padding: 25px 20px;
-      transform: translateY(100%);
-      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      z-index: 900;
-      box-shadow: 0 -5px 35px rgba(0, 0, 0, 0.15);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .share-modal.show {
-      transform: translateY(0);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .close-modal {
-      background: none;
-      border: none;
-      font-size: 1.8rem;
-      color: #888;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-
-    .close-modal:hover {
-      background: rgba(0, 0, 0, 0.05);
-      color: var(--text);
-      transform: rotate(90deg);
-    }
-
-    .share-message {
-      font-size: 1.1rem;
-      margin-bottom: 20px;
-      line-height: 1.5;
-      color: var(--text);
-      background: rgba(0, 0, 0, 0.03);
-      border-radius: 12px;
-      padding: 15px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .share-buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .telegram-share {
-      background: linear-gradient(45deg, #0088cc, #00bfff);
-      color: white;
-      flex: 1;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .achievement-icon {
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .pulse {
-      animation: pulse 1s infinite;
-    }
-
-    .counter-animation {
-      animation: jump 0.3s ease;
-    }
-
-    @keyframes jump {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
-    }
-
-    .streak-display {
-      font-size: 1.1rem;
-      margin-top: 5px;
-      color: var(--warning);
-      font-weight: 600;
-      min-height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .streak-bar {
-      height: 6px;
-      background: rgba(255, 171, 0, 0.2);
-      border-radius: 3px;
-      margin: 8px auto;
-      overflow: hidden;
-      max-width: 300px;
-    }
-
-    .streak-progress {
-      height: 100%;
-      background: var(--warning);
-      border-radius: 3px;
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-
-    .new-record {
-      animation: new-record 1.5s ease;
-    }
-
-    @keyframes new-record {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 200, 83, 0.7); }
-    }
-
-    .confetti-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 2000;
-    }
-
-    .confetti-piece {
-      position: absolute;
-      width: 10px;
-      height: 20px;
-      opacity: 0;
-    }
-    
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .close-modal {
-      background: none;
-      border: none;
-      font-size: 1.8rem;
-      color: #888;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-
-    .close-modal:hover {
-      background: rgba(0, 0, 0, 0.05);
-      color: var(--text);
-      transform: rotate(90deg);
-    }
-
-    .share-message {
-      font-size: 1.1rem;
-      margin-bottom: 20px;
-      line-height: 1.5;
-      color: var(--text);
-      background: rgba(0, 0, 0, 0.03);
-      border-radius: 12px;
-      padding: 15px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .share-buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .telegram-share {
-      background: linear-gradient(45deg, #0088cc, #00bfff);
-      color: white;
-      flex: 1;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .achievement-icon {
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .pulse {
-      animation: pulse 1s infinite;
-    }
-
-    .counter-animation {
-      animation: jump 0.3s ease;
-    }
-
-    @keyframes jump {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2962ff">
+    <meta name="description" content="Telegram Clicker Pro v1.5.0 - улучшенный кликер с сохранением в облако">
+    <title>🚀 Telegram Clicker Pro v1.5.0</title>
+
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Стили -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="logo">
-        <i class="fas fa-bolt logo-icon"></i>
-        <h1>CLICKER PRO</h1>
-      </div>
-      <div class="version">v1.0.0</div>
-      <div class="subtitle">Ваш прогресс сохраняется автоматически</div>
+    <div class="container">
+        <!-- Хедер с информацией -->
+        <header class="header">
+            <div class="logo-container">
+                <i class="fas fa-bolt logo-icon"></i>
+                <div class="logo-text">
+                    <h1>CLICKER PRO</h1>
+                    <div class="version-badge">v1.5.0</div>
+                </div>
+            </div>
+            <p class="subtitle">Ваш прогресс сохраняется в облаке</p>
+        </header>
+
+        <!-- Статистика -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-icon"><i class="fas fa-fire"></i></div>
+                <div class="stat-content">
+                    <div class="stat-value" id="streak-count">0</div>
+                    <div class="stat-label">Текущий стрик</div>
+                </div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+                <div class="stat-content">
+                    <div class="stat-value" id="level-display">1</div>
+                    <div class="stat-label">Уровень</div>
+                </div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-content">
+                    <div class="stat-value" id="time-played">0:00</div>
+                    <div class="stat-label">Время игры</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной счетчик -->
+        <div class="main-counter">
+            <div class="counter-value" id="counter-display">0</div>
+            <div class="counter-label">очков</div>
+        </div>
+
+        <!-- Прогресс уровня -->
+        <div class="level-progress-container">
+            <div class="level-progress-label">
+                <span id="current-xp">0</span> / <span id="next-level-xp">100</span> XP
+            </div>
+            <div class="level-progress-bar">
+                <div class="level-progress-fill" id="xp-progress"></div>
+            </div>
+        </div>
+
+        <!-- Кнопка клика -->
+        <button class="click-btn pulse" id="click-btn">
+            <i class="fas fa-bolt"></i> +1
+        </button>
+
+        <!-- Быстрые действия -->
+        <div class="quick-actions">
+            <button class="action-btn reset-btn" id="reset-btn" title="Сбросить прогресс">
+                <i class="fas fa-redo"></i>
+            </button>
+            <button class="action-btn share-btn" id="share-btn" title="Поделиться результатом">
+                <i class="fas fa-share-alt"></i>
+            </button>
+            <button class="action-btn achievements-btn" id="achievements-btn" title="Достижения">
+                <i class="fas fa-trophy"></i> <span class="badge" id="unlocked-count">0</span>
+            </button>
+            <button class="action-btn cloud-btn" id="cloud-sync-btn" title="Сохранить в облако">
+                <i class="fas fa-cloud"></i>
+            </button>
+            <button class="action-btn settings-btn" id="settings-btn" title="Настройки">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+
+        <!-- Информация о скорости -->
+        <div class="speed-info">
+            <i class="fas fa-bolt"></i> <span id="click-speed">0.0</span> кликов/сек
+        </div>
     </div>
 
-    <div class="stats-container">
-      <div class="stat-card">
-        <div class="stat-value" id="total-clicks">0</div>
-        <div class="stat-label">Всего</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="max-streak">0</div>
-        <div class="stat-label">Макс. стрик</div>
-      </div>
+    <!-- Particles container -->
+    <div class="particles" id="particles"></div>
+    <div class="confetti-container" id="confetti-container"></div>
+
+    <!-- Achievement notification -->
+    <div class="achievement-notification" id="achievement-notification">
+        <i class="fas fa-trophy achievement-icon"></i>
+        <div class="achievement-content">
+            <div class="achievement-title" id="achievement-title">Достижение разблокировано!</div>
+            <div class="achievement-description" id="achievement-desc">Поздравляем с новым достижением!</div>
+        </div>
     </div>
 
-    <div class="counter-display" id="counter">0</div>
-    <div class="streak-display" id="streak-display">Серия: 0</div>
-    <div class="streak-bar">
-      <div class="streak-progress" id="streak-bar"></div>
-    </div>
-    
-    <button class="click-btn pulse" id="click-btn">
-      <i class="fas fa-bolt"></i> +1
-    </button>
-    
-    <div class="btn-container">
-      <button class="action-btn reset-btn" id="reset-btn">
-        <i class="fas fa-redo"></i> Сбросить
-      </button>
-      <button class="action-btn share-btn" id="share-btn">
-        <i class="fas fa-share-alt"></i> Поделиться
-      </button>
-      <button class="action-btn settings-btn" id="settings-btn">
-        <i class="fas fa-cog"></i> Настройки
-      </button>
-    </div>
-  </div>
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-cog"></i> Настройки v1.5.0</h2>
+                <button class="close-modal" id="close-settings">&times;</button>
+            </div>
 
-  <div class="particles" id="particles"></div>
-  <div class="confetti-container" id="confetti-container"></div>
-  
-  <div class="achievement" id="achievement">
-    <i class="fas fa-trophy achievement-icon"></i>
-    <span id="achievement-text">Достижение разблокировано!</span>
-  </div>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3><i class="fas fa-volume-up"></i> Звуковые эффекты</h3>
+                        <p>Включить звуковые эффекты при кликах</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
 
-  <div class="settings-modal" id="settings-modal">
-    <div class="modal-content">
-      <h2 class="modal-title">⚙️ Настройки</h2>
-      
-      <div class="setting-option">
-        <label class="setting-label">Звуковые эффекты</label>
-        <label class="toggle">
-          <input type="checkbox" id="sound-toggle" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-      
-      <div class="setting-option">
-        <label class="setting-label">Вибрация</label>
-        <label class="toggle">
-          <input type="checkbox" id="vibration-toggle" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-      
-      <div class="setting-option">
-        <label class="setting-label">Анимации частиц</label>
-        <label class="toggle">
-          <input type="checkbox" id="particles-toggle" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-      
-      <div class="setting-option">
-        <label class="setting-label">Авто-сохранение</label>
-        <label class="toggle">
-          <input type="checkbox" id="autosave-toggle" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-      
-      <button class="action-btn" id="close-settings" style="margin-top: 20px; width: 100%; background: var(--primary); color: white;">
-        <i class="fas fa-check"></i> Применить
-      </button>
-    </div>
-  </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3><i class="fas fa-vibrate"></i> Вибрация</h3>
+                        <p>Вибрация устройства при кликах</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="vibration-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
 
-  <div class="share-modal" id="share-modal">
-    <div class="modal-header">
-      <h3>🏆 Поделиться результатом</h3>
-      <button class="close-modal" id="close-share-modal">&times;</button>
-    </div>
-    <p class="share-message">Я набрал <strong id="share-count">0</strong> очков в Telegram Clicker Pro! Мой лучший стрик: <span id="share-streak">0</span>. Попробуй побить мой рекорд!</p>
-    <div class="share-buttons">
-      <button class="action-btn telegram-share" id="telegram-share">
-        <i class="fab fa-telegram"></i> Отправить в Telegram
-      </button>
-    </div>
-  </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3><i class="fas fa-sparkles"></i> Анимации частиц</h3>
+                        <p>Визуальные эффекты при кликах</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="particles-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
 
-  <script>
-    // Инициализация Telegram WebApp
-    Telegram.WebApp.expand();
-    Telegram.WebApp.ready();
-    
-    // DOM элементы
-    const counterElement = document.getElementById('counter');
-    const totalClicksElement = document.getElementById('total-clicks');
-    const maxStreakElement = document.getElementById('max-streak');
-    const clickBtn = document.getElementById('click-btn');
-    const resetBtn = document.getElementById('reset-btn');
-    const shareBtn = document.getElementById('share-btn');
-    const settingsBtn = document.getElementById('settings-btn');
-    const streakDisplay = document.getElementById('streak-display');
-    const streakBar = document.getElementById('streak-bar');
-    const particlesContainer = document.getElementById('particles');
-    const achievementElement = document.getElementById('achievement');
-    const achievementText = document.getElementById('achievement-text');
-    const settingsModal = document.getElementById('settings-modal');
-    const shareModal = document.getElementById('share-modal');
-    const closeSettings = document.getElementById('close-settings');
-    const closeShareModal = document.getElementById('close-share-modal');
-    const telegramShare = document.getElementById('telegram-share');
-    const shareCount = document.getElementById('share-count');
-    const shareStreak = document.getElementById('share-streak');
-    const confettiContainer = document.getElementById('confetti-container');
-    
-    // Настройки из localStorage
-    let settings = {
-      sound: localStorage.getItem('clicker_sound') !== 'false',
-      vibration: localStorage.getItem('clicker_vibration') !== 'false',
-      particles: localStorage.getItem('clicker_particles') !== 'false',
-      autosave: localStorage.getItem('clicker_autosave') !== 'false'
-    };
-    
-    // Игровое состояние
-    let gameState = {
-      count: 0,
-      totalClicks: 0,
-      streak: 0,
-      maxStreak: 0,
-      lastClickTime: 0,
-      startTime: Date.now()
-    };
-    
-    // Инициализация звука
-    let audioContext;
-    let clickSound;
-    let audioInitialized = false;
-    
-    function initAudio() {
-      if (audioInitialized) return;
-      
-      try {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const gainNode = audioContext.createGain();
-        gainNode.gain.value = 0.2;
-        gainNode.connect(audioContext.destination);
-        
-        // Создаем простой звук клика
-        clickSound = {
-          play: () => {
-            if (!settings.sound || !audioContext) return;
-            
-            // Возобновляем аудиоконтекст, если он приостановлен
-            if (audioContext.state === 'suspended') {
-              audioContext.resume();
-            }
-            
-            const oscillator = audioContext.createOscillator();
-            const envelope = audioContext.createGain();
-            
-            oscillator.type = 'sine';
-            oscillator.frequency.value = 800;
-            
-            envelope.gain.value = 0.1;
-            envelope.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
-            
-            oscillator.connect(envelope);
-            envelope.connect(gainNode);
-            
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.1);
-          }
-        };
-        
-        audioInitialized = true;
-      } catch (e) {
-        console.log('Web Audio API не поддерживается', e);
-      }
-    }
-    
-    // Проверка поддержки вибрации
-    const hasVibration = !!navigator.vibrate;
-    
-    // Инициализация настроек
-    function initSettings() {
-      document.getElementById('sound-toggle').checked = settings.sound;
-      document.getElementById('vibration-toggle').checked = settings.vibration;
-      document.getElementById('particles-toggle').checked = settings.particles;
-      document.getElementById('autosave-toggle').checked = settings.autosave;
-      
-      // Обработчики изменений настроек
-      document.getElementById('sound-toggle').addEventListener('change', (e) => {
-        settings.sound = e.target.checked;
-        localStorage.setItem('clicker_sound', settings.sound);
-      });
-      
-      document.getElementById('vibration-toggle').addEventListener('change', (e) => {
-        settings.vibration = e.target.checked;
-        localStorage.setItem('clicker_vibration', settings.vibration);
-      });
-      
-      document.getElementById('particles-toggle').addEventListener('change', (e) => {
-        settings.particles = e.target.checked;
-        localStorage.setItem('clicker_particles', settings.particles);
-      });
-      
-      document.getElementById('autosave-toggle').addEventListener('change', (e) => {
-        settings.autosave = e.target.checked;
-        localStorage.setItem('clicker_autosave', settings.autosave);
-      });
-    }
-    
-    // Загрузка сохраненного состояния
-    function loadGameState() {
-      const savedState = localStorage.getItem('clicker_game_state');
-      if (savedState) {
-        try {
-          const parsedState = JSON.parse(savedState);
-          gameState = {
-            ...gameState,
-            ...parsedState
-          };
-        } catch (e) {
-          console.log('Ошибка при загрузке состояния', e);
-        }
-      }
-      
-      // Обновление UI
-      updateUI();
-    }
-    
-    // Сохранение состояния
-    function saveGameState() {
-      if (!settings.autosave) return;
-      localStorage.setItem('clicker_game_state', JSON.stringify(gameState));
-    }
-    
-    // Обновление UI
-    function updateUI() {
-      counterElement.textContent = gameState.count;
-      totalClicksElement.textContent = gameState.totalClicks;
-      maxStreakElement.textContent = gameState.maxStreak;
-      streakDisplay.textContent = `Серия: ${gameState.streak}`;
-      
-      // Обновление прогресс-бара стрика
-      const streakPercentage = Math.min(100, (gameState.streak / Math.max(10, gameState.maxStreak)) * 100);
-      streakBar.style.width = `${streakPercentage}%`;
-      
-      // Если новый рекорд
-      if (gameState.streak > 0 && gameState.streak === gameState.maxStreak) {
-        streakDisplay.classList.add('new-record');
-        setTimeout(() => {
-          streakDisplay.classList.remove('new-record');
-        }, 1500);
-      }
-      
-      // Обновление данных для шеринга
-      shareCount.textContent = gameState.count;
-      shareStreak.textContent = gameState.maxStreak;
-    }
-    
-    // Воспроизведение звука
-    function playSound() {
-      if (settings.sound && clickSound) {
-        try {
-          clickSound.play();
-        } catch (e) {
-          console.log('Ошибка воспроизведения звука', e);
-        }
-      }
-    }
-    
-    // Вибрация
-    function vibrate() {
-      if (settings.vibration && hasVibration) {
-        navigator.vibrate(30);
-      }
-    }
-    
-    // Создание частиц
-    function createParticles(x, y) {
-      if (!settings.particles) return;
-      
-      const colors = ['#2962ff', '#00c853', '#ffab00', '#ff5252', '#651fff'];
-      const particleCount = 15;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        // Случайные параметры
-        const size = Math.random() * 8 + 4;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const angle = Math.random() * Math.PI * 2;
-        const velocity = Math.random() * 3 + 1;
-        const duration = Math.random() * 800 + 400;
-        
-        // Позиция - используем точку клика как центр, а не фиксированное смещение
-        const offsetX = (Math.random() - 0.5) * 40;
-        const offsetY = (Math.random() - 0.5) * 40;
-        
-        // Стили частицы
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.backgroundColor = color;
-        particle.style.left = `${x + offsetX}px`;
-        particle.style.top = `${y + offsetY}px`;
-        particle.style.boxShadow = `0 0 ${size}px ${color}`;
-        particle.style.position = 'absolute';
-        particle.style.borderRadius = '50%';
-        particle.style.pointerEvents = 'none';
-        
-        particlesContainer.appendChild(particle);
-        
-        // Анимация - более разнообразное движение
-        const moveX = Math.cos(angle) * velocity * 30;
-        const moveY = Math.sin(angle) * velocity * 30;
-        
-        setTimeout(() => {
-          particle.style.transition = `all ${duration}ms cubic-bezier(0.2, 0.8, 0.4, 1)`;
-          particle.style.transform = `translate(${moveX}px, ${moveY}px) scale(0)`;
-          particle.style.opacity = '0';
-          
-          setTimeout(() => {
-            if (particle.parentNode) {
-              particle.parentNode.removeChild(particle);
-            }
-          }, duration);
-        }, 10);
-      }
-    }
-    
-    // Показать достижение
-    function showAchievement(text, type = 'info') {
-      achievementText.textContent = text;
-      achievementElement.className = 'achievement';
-      
-      if (type === 'success') {
-        achievementElement.classList.add('success');
-      } else if (type === 'warning') {
-        achievementElement.classList.add('warning');
-      }
-      
-      achievementElement.classList.add('show');
-      
-      setTimeout(() => {
-        achievementElement.classList.remove('show');
-      }, 3000);
-    }
-    
-    // Создание конфетти
-    function createConfetti() {
-      confettiContainer.innerHTML = '';
-      
-      const colors = ['#2962ff', '#00c853', '#ffab00', '#ff5252', '#651fff'];
-      const confettiCount = 100;
-      
-      for (let i = 0; i < confettiCount; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti-piece';
-        
-        // Случайные параметры
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const size = Math.random() * 8 + 4;
-        const left = Math.random() * 100;
-        const delay = Math.random() * 1000;
-        const duration = Math.random() * 2000 + 2000;
-        
-        confetti.style.backgroundColor = color;
-        confetti.style.left = `${left}%`;
-        confetti.style.width = `${size}px`;
-        confetti.style.height = `${size * 1.5}px`;
-        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-        confetti.style.opacity = '0';
-        
-        confettiContainer.appendChild(confetti);
-        
-        // Анимация
-        setTimeout(() => {
-          confetti.style.transition = `all ${duration}ms cubic-bezier(0,0,0.2,1)`;
-          confetti.style.opacity = '0.8';
-          confetti.style.top = '100%';
-          confetti.style.transform = `rotate(${Math.random() * 720}deg)`;
-          
-          setTimeout(() => {
-            confetti.style.opacity = '0';
-          }, duration - 500);
-          
-          setTimeout(() => {
-            if (confetti.parentNode) {
-              confetti.parentNode.removeChild(confetti);
-            }
-          }, duration);
-        }, delay);
-      }
-    }
-    
-    // Обработчик клика
-    function handleClick() {
-      // Инициализируем аудио при первом клике
-      if (!audioInitialized) {
-        initAudio();
-      }
-      
-      // Текущее время
-      const now = Date.now();
-      
-      // Обновление стрика
-      if (now - gameState.lastClickTime < 1000) {
-        gameState.streak++;
-        
-        // Обновление максимального стрика
-        if (gameState.streak > gameState.maxStreak) {
-          gameState.maxStreak = gameState.streak;
-          
-          // Достижение при новом рекорде стрика
-          if (gameState.maxStreak % 10 === 0) {
-            showAchievement(`🔥 Новый рекорд стрика: ${gameState.maxStreak}!`, 'warning');
-          }
-        }
-      } else {
-        gameState.streak = 1;
-      }
-      
-      gameState.lastClickTime = now;
-      
-      // Увеличение счетчика
-      gameState.count++;
-      gameState.totalClicks++;
-      
-      // Расчет скорости кликов
-      if (gameState.totalClicks > 1) {
-        const timeDiff = (now - gameState.startTime) / 1000;
-      }
-      
-      // Обновление UI с анимацией
-      counterElement.classList.add('counter-animation');
-      setTimeout(() => {
-        counterElement.classList.remove('counter-animation');
-      }, 300);
-      
-      updateUI();
-      
-      // Эффекты
-      playSound();
-      vibrate();
-      
-      // Позиция кнопки для частиц
-      const rect = clickBtn.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-      
-      createParticles(x, y);
-      
-      // Достижения
-      if (gameState.count === 1) {
-        showAchievement('🎮 Игра началась! Первый клик!', 'success');
-      } else if (gameState.count === 10) {
-        showAchievement('⭐ 10 кликов! Продолжай в том же духе!', 'success');
-      } else if (gameState.count === 50) {
-        showAchievement('🔥 50 кликов! Ты на огне!', 'success');
-      } else if (gameState.count === 100) {
-        showAchievement('💯 СТО КЛИКОВ! Легенда!', 'success');
-        createConfetti();
-      } else if (gameState.count % 100 === 0) {
-        showAchievement(`🚀 ${gameState.count} кликов! Космический рекорд!`, 'warning');
-        createConfetti();
-      }
-      
-      // Сохранение состояния
-      saveGameState();
-    }
-    
-    // Сброс игры
-    function resetGame() {
-      if (gameState.count === 0 && gameState.totalClicks === 0) return;
-      
-      if (confirm('Вы уверены, что хотите сбросить прогресс? Это действие нельзя отменить!')) {
-        gameState = {
-          count: 0,
-          totalClicks: 0,
-          streak: 0,
-          maxStreak: 0,
-          lastClickTime: 0,
-          startTime: Date.now()
-        };
-        
-        updateUI();
-        saveGameState();
-        showAchievement('🔄 Прогресс сброшен!', 'success');
-      }
-    }
-    
-    // Отправка в Telegram
-    function shareToTelegram() {
-      const text = `🎮 Я набрал ${gameState.count} очков в Telegram Clicker Pro!\n🔥 Мой лучший стрик: ${gameState.maxStreak}\n\nПопробуй побить мой рекорд: https://t.me/your_clicker_bot`;
-      
-      // Используем Telegram WebApp для отправки
-      Telegram.WebApp.sendData(JSON.stringify({
-        type: 'share_result',
-        score: gameState.count,
-        maxStreak: gameState.maxStreak,
-        message: text
-      }));
-      
-      // Показываем сообщение об отправке
-      showAchievement('✅ Результат отправлен в Telegram!', 'success');
-      shareModal.classList.remove('show');
-    }
-    
-    // Инициализация приложения
-    function init() {
-      // Инициализация настроек
-      initSettings();
-      
-      // Загрузка состояния игры
-      loadGameState();
-      
-      // Установка времени начала
-      if (!gameState.startTime) {
-        gameState.startTime = Date.now();
-      }
-      
-      // Обработчики событий
-      clickBtn.addEventListener('click', handleClick);
-      resetBtn.addEventListener('click', resetGame);
-      
-      shareBtn.addEventListener('click', () => {
-        shareModal.classList.add('show');
-      });
-      
-      closeShareModal.addEventListener('click', () => {
-        shareModal.classList.remove('show');
-      });
-      
-      telegramShare.addEventListener('click', shareToTelegram);
-      
-      settingsBtn.addEventListener('click', () => {
-        settingsModal.classList.add('show');
-      });
-      
-      closeSettings.addEventListener('click', () => {
-        settingsModal.classList.remove('show');
-      });
-      
-      // Обработчик клика вне модального окна
-      settingsModal.addEventListener('click', (e) => {
-        if (e.target === settingsModal) {
-          settingsModal.classList.remove('show');
-        }
-      });
-      
-      // Автоматический расчет скорости кликов
-      setInterval(() => {
-        if (gameState.totalClicks > 0) {
-          const now = Date.now();
-          const timeDiff = (now - gameState.startTime) / 1000;
-        }
-      }, 1000);
-      
-      // Показываем начальное достижение
-      setTimeout(() => {
-        showAchievement('🚀 Telegram Clicker Pro v1.0.0 запущен!', 'success');
-      }, 1000);
-    }
-    
-    // Запуск приложения при загрузке
-    window.addEventListener('DOMContentLoaded', init);
-    
-    // Обработчик закрытия приложения
-    window.addEventListener('beforeunload', () => {
-      saveGameState();
-    });
-  </script>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3><i class="fas fa-cloud"></i> Авто-сохранение</h3>
+                        <p>Автоматически сохранять прогресс в облако</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="autosave-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3><i class="fas fa-palette"></i> Темная тема</h3>
+                        <p>Использовать темную цветовую схему</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn primary-btn" id="save-settings-btn">Применить настройки</button>
+                <button class="btn outline-btn" id="reset-settings-btn">Сбросить настройки</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievements Modal -->
+    <div class="modal-overlay" id="achievements-modal">
+        <div class="modal-content achievements-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-trophy"></i> Мои достижения</h2>
+                <button class="close-modal" id="close-achievements">&times;</button>
+            </div>
+
+            <div class="achievements-grid" id="achievements-grid">
+                <!-- Достижения будут добавлены динамически -->
+            </div>
+
+            <div class="modal-footer">
+                <div class="stats-summary">
+                    <div class="stat-item">
+                        <i class="fas fa-trophy gold"></i>
+                        <span id="gold-count">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-trophy silver"></i>
+                        <span id="silver-count">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-trophy bronze"></i>
+                        <span id="bronze-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal-overlay" id="share-modal">
+        <div class="modal-content share-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-share-alt"></i> Поделиться результатом</h2>
+                <button class="close-modal" id="close-share">&times;</button>
+            </div>
+
+            <div class="share-content">
+                <div class="result-card">
+                    <div class="result-value" id="share-score">0</div>
+                    <div class="result-label">очков</div>
+                </div>
+                <div class="result-details">
+                    <div class="detail-item">
+                        <i class="fas fa-trophy"></i>
+                        <span>Уровень: <strong id="share-level">1</strong></span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-fire"></i>
+                        <span>Макс. стрик: <strong id="share-max-streak">0</strong></span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Время: <strong id="share-time">0:00</strong></span>
+                    </div>
+                </div>
+                <div class="share-message">
+                    <p>Играйте в Telegram Clicker Pro и побейте мой рекорд!</p>
+                </div>
+                <div class="share-buttons">
+                    <button class="btn telegram-btn" id="telegram-share-btn">
+                        <i class="fab fa-telegram"></i> Отправить в Telegram
+                    </button>
+                    <button class="btn copy-btn" id="copy-link-btn">
+                        <i class="fas fa-copy"></i> Скопировать ссылку
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script src="js/script.js"></script>
 </body>
+
 </html>

@@ -920,6 +920,7 @@ width:100%;
 <div class="win-name" id="winName"></div>
 <div class="win-wear" id="winWear"></div>
 <div class="win-float" id="winFloat"></div>
+<div class="win-stattrak" id="winStatTrak" style="display:none; font-weight:700; font-size:13px; margin-bottom:6px;"></div>
 <div class="win-price" id="winPrice"></div>
 <div class="win-multiplier" id="winMultiplier"></div><div class="win-cashback" id="winCashback" style="display:none; color:var(--success); font-size:13px; margin-bottom:4px;"></div><div class="win-debt-notice" id="winDebtNotice" style="display:none"></div>
 <div class="win-actions">
@@ -2219,6 +2220,7 @@ const CASES = [
           <div style="position:absolute;top:0;left:0;right:0;height:2px;background:${rarityColor}"></div>
           <div class="inv-item-icon">${item.icon}</div>
           <div class="inv-item-name">${item.name}</div>
+          ${item.statTrak ? '<div class="inv-item-stattrak" style="color:#ff9900; font-size:10px; font-weight:700; margin-bottom:2px;">★ StatTrak™ (x' + (item.statTrakCount || 1) + ')</div>' : ''}
           <div class="inv-item-wear" style="color:${rarityColor}">${wearTier.name}</div>
           <div class="inv-item-float">${(item.wear || 0).toFixed(4)}</div>
           <div class="inv-item-price">${formatMoney(finalPrice)}</div>
@@ -2663,6 +2665,12 @@ const CASES = [
       }
       Pity.onResult(p, winSkin.rarity);
       
+      // StatTrak roll (5% chance, for non-gold items)
+      let isStatTrak = false;
+      if (winSkin.rarity !== 'gold' && Math.random() < 0.05) {
+        isStatTrak = true;
+      }
+      
       document.getElementById('rouletteCaseName').textContent = caseData.name;
       document.getElementById('rouletteOverlay').classList.add('show');
 
@@ -2699,15 +2707,18 @@ const CASES = [
       setTimeout(() => {
         stopTicks();
         document.getElementById('rouletteOverlay').classList.remove('show');
-        showWinPopup(winSkin, caseData, isFree);
+        showWinPopup(winSkin, caseData, isFree, isStatTrak);
         isSpinning = false;
       }, 4600);
     }
 
-    function showWinPopup(skin, caseData, isFree = false){
+    function showWinPopup(skin, caseData, isFree = false, isStatTrak = false){
       const wearFloat = Economy.randomWear();
       const wearTier = Economy.getWearTier(wearFloat);
-      const finalPrice = Math.round(skin.price * wearTier.mult * 100) / 100;
+      let finalPrice = Math.round(skin.price * wearTier.mult * 100) / 100;
+      if (isStatTrak) {
+        finalPrice = Math.round(finalPrice * 2 * 100) / 100;
+      }
       const casePrice = isFree ? 1 : caseData.price;
       const multiplier = finalPrice / casePrice;
       const isBigWin = multiplier >= 5 || skin.rarity === 'gold' || skin.rarity === 'covert';
@@ -2744,6 +2755,17 @@ const CASES = [
       document.getElementById('winWear').textContent = wearTier.name;
       document.getElementById('winWear').style.color = RARITIES[skin.rarity].color;
       document.getElementById('winFloat').textContent = 'Float: ' + wearFloat.toFixed(6);
+      
+      // StatTrak display
+      const statTrakEl = document.getElementById('winStatTrak');
+      if (isStatTrak) {
+        statTrakEl.style.display = 'block';
+        statTrakEl.textContent = '★ StatTrak™';
+        statTrakEl.style.color = '#ff9900';
+      } else {
+        statTrakEl.style.display = 'none';
+      }
+      
       document.getElementById('winPrice').textContent = formatMoney(finalPrice);
 
       const multEl = document.getElementById('winMultiplier');
@@ -2791,7 +2813,9 @@ const CASES = [
           price: skin.price,
           icon: skin.icon,
           wear: wearFloat,
-          finalPrice: finalPrice
+          finalPrice: finalPrice,
+          statTrak: isStatTrak || false,
+          statTrakCount: isStatTrak ? 1 : 0
         });
         popup.classList.remove('show');
         updateUI();
